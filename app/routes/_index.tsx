@@ -1,4 +1,14 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
+
+import { authenticator } from "~/auth.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  await authenticator.isAuthenticated(request, {
+    successRedirect: "/account",
+    failureRedirect: "/login",
+  });
+  return {};
+};
 
 export const meta: MetaFunction = () => {
   return [
